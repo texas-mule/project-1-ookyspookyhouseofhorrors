@@ -1,0 +1,32 @@
+CREATE TABLE public.events
+(
+    id integer NOT NULL DEFAULT nextval('events_id_seq'::regclass) ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    description character varying COLLATE pg_catalog."default" NOT NULL,
+    "sanityRoll" integer NOT NULL
+)
+
+CREATE TABLE public.items
+(
+    id integer NOT NULL DEFAULT nextval('items_id_seq'::regclass) ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    description character varying COLLATE pg_catalog."default" NOT NULL,
+    "mightBonus" integer NOT NULL,
+    "sanityBonus" integer NOT NULL
+)
+
+CREATE TABLE public.monsters
+(
+    id integer NOT NULL DEFAULT nextval('monsters_id_seq'::regclass) ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    description character varying COLLATE pg_catalog."default" NOT NULL,
+    hp integer NOT NULL,
+    strength integer NOT NULL
+)
+
+CREATE TABLE public.rooms
+(
+    id integer NOT NULL DEFAULT nextval('rooms_id_seq'::regclass) ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying COLLATE pg_catalog."default" NOT NULL,
+    description character varying COLLATE pg_catalog."default" NOT NULL
+)
