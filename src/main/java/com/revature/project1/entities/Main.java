@@ -26,25 +26,9 @@ public class Main {
 			System.out.println("Would you like to view the [l]eaderboards or Play the game?: ");
 			userInput = scanIn.nextLine();
 			
-			if (userInput.equalsIgnoreCase("l")){
-				String lead = Player.getLeaderboards();
-				lead = lead.substring(1, lead.length()-1);
-				
-				
-				String[] meme = lead.split("},");
-				
-//				for (int i = 0; i < meme.length; i+=2)
-//				{
-//					System.out.print((meme[i].replace("}", "")).replace(",", ""));
-//					System.out.println((" "+meme[i+1].replace("}", "")).replace(",", ""));
-//				}
-				
-					
-				
-				
-			}
-			
-			
+			if (userInput.equalsIgnoreCase("l"))
+				Player.displayLeaderboard();
+			userInput = scanIn.nextLine();
 			System.out.print("Please enter your existing name to resume a run or enter a new name: ");
 			Player player = Player.getPlayer("rob");
 			System.out.println(player.loginString());

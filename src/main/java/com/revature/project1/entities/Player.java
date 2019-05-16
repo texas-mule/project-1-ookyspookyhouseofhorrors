@@ -150,6 +150,26 @@ public class Player {
 		return response;
 	}
 	
+	public static void displayLeaderboard(){
+		String leaderboards = getLeaderboards();
+		leaderboards = leaderboards.substring(1, leaderboards.length()-1);
+		leaderboards = leaderboards.replaceAll("\\{", "");
+		
+		String[] meme = leaderboards.split("},");
+		System.out.println("++++++++++++++++++++");
+		System.out.println("+Rooms\t|Name\t   +");
+		System.out.println("+-------+----------+");
+		for (int i = 0; i < meme.length; i++)
+		{
+			String[] pair = meme[i].split(", ");
+			
+			// This bastard line of a code splits the data pair and formats it into a legible way
+			System.out.println("+"+pair[0].trim().split("=")[1] + "\t|" + pair[1].replace("}", "").split("=")[1]);
+		}
+		System.out.println("++++++++++++++++++++");
+		System.out.println();
+	}
+	
 	
 	
 	
