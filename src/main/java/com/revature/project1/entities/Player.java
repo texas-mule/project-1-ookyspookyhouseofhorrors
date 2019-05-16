@@ -1,6 +1,7 @@
 package com.revature.project1.entities;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,6 +17,28 @@ public class Player {
 	private int rowCoord;
 	private int colCoord;
 	ArrayList<Item> inventory = new ArrayList<>();
+	private int roomCount;
+	
+	
+	public Player(String data){
+		
+		// Parse HTTPresponse data into Person object
+		data = data.substring(2,data.length()-2);
+		String[] dataArr = data.split(",");
+
+		for (int i=0 ; i< dataArr.length; i++){
+			String[] pair = dataArr[i].trim().split("=");
+			System.out.println(pair[0] +" "+pair[1]);
+			if (pair[0].equals("name")) this.name=pair[1];
+			else if(pair[0].equals("hp")) this.hp=Integer.parseInt(pair[1]);
+			else if(pair[0].equals("might")) this.mightStat=Integer.parseInt(pair[1]);
+			else if(pair[0].equals("sanity")) this.sanityStat=Integer.parseInt(pair[1]);
+		}
+		this.rowCoord = 0;
+		this.colCoord = 2;
+		this.roomCount = 1;
+	}
+	
 	
 	public Player(String name, int hp, int mightStat, int sanityStat) {
 		this.name = name;
@@ -24,6 +47,7 @@ public class Player {
 		this.sanityStat = sanityStat;
 		this.rowCoord = 0;
 		this.colCoord = 2;
+		this.roomCount = 1;
 	}
 
 	public int getHP(){
@@ -82,6 +106,55 @@ public class Player {
 	public void setColCoord(int colCoord) {
 		this.colCoord = colCoord;
 	}
+	
+	public void incrementRoomCount(){
+		this.roomCount++;
+	}
+	
+	
+	// CREATES AN HTTPRequest FOR POST TO SAVE A NEW PLAYER
+	public void savePlayer(){
+		String url = "/player?name="+name+"&hp="+hp+"&might="+mightStat+"&sanity="+sanityStat;
+		HttpRequest httpReq = new HttpRequest(url,"POST");
+		httpReq.getResponse();
+		httpReq.close();
+	}
+	
+	// CREATES AN HTTPRequest FOR GET TO RETRIEVE A PLAYER
+	public static Player getPlayer(String name){
+		String url = "/player/"+name;
+		HttpRequest httpReq = new HttpRequest(url,"GET");
+		String response = httpReq.getResponse();
+		System.out.println(response);
+		httpReq.close();
+		return new Player(response);
+	}
+	
+	// CREATES AN HTTPRequest FOR PATCH FOR UPDATING A PLAYER
+	public void updatePlayer(){
+		String url = "/player?name="+name
+					+"&hp="+hp
+					+"&might="+mightStat
+					+"&sanity="+sanityStat;
+		HttpRequest httpReq = new HttpRequest(url,"PUT");
+		httpReq.getResponse();
+		httpReq.close();
+	}
+	
+	// Returns the top 10 players from the database ordered by number of rooms discovered
+	public static String getLeaderboards(){
+		String url = "/player/leaderboard";
+		HttpRequest httpReq = new HttpRequest(url,"GET");
+		String response = httpReq.getResponse();
+		httpReq.close();
+		return response;
+	}
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * Represents an attack made by player against monster. Generates a random damage amount (1-6) 
@@ -108,6 +181,12 @@ public class Player {
 		inventory.add(item);
 		this.alterMight(item.getMightBonus());
 		this.alterSanity(item.getSanityBonus());
+	}
+	
+	public String loginString(){
+		return "++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"
+				+ "Welcome "+name+". Stats HP:"+hp+", Might:"+mightStat+", Sanity:"+sanityStat+"\n"
+				+ "++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n"; 
 	}
 	
 	public String displayStats(){

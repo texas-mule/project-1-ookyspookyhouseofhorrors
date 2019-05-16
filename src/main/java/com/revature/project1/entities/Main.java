@@ -20,31 +20,35 @@ public class Main {
 		
 		Scanner scanIn = new Scanner(System.in);
 		
-		
-		
-		
-		
-		
-		
 		try (Connection connection = DriverManager.getConnection("jdbc:postgresql://isilo.db.elephantsql.com:5432/hsxmymzc",
 				"hsxmymzc","MA2IOW7yUVohDVKl0haDxrU8luBqEt0E")){
 
-			Map<String, String> parameters = new HashMap<>();
-			parameters.put("name","newplayer");
-//			parameters.put("hp", "25");
-//			parameters.put("might", "5");
-//			parameters.put("sanity", "5");
+			System.out.println("Would you like to view the [l]eaderboards or Play the game?: ");
+			userInput = scanIn.nextLine();
 			
-			HttpRequest httpReq = new HttpRequest("/player/newplayer","POST");
-			httpReq.setHeaderJson();
-			httpReq.addParameters(parameters);
-			System.out.println(httpReq.getResponse());
-			httpReq.close();
+			if (userInput.equalsIgnoreCase("l")){
+				String lead = Player.getLeaderboards();
+				lead = lead.substring(1, lead.length()-1);
+				
+				
+				String[] meme = lead.split("},");
+				
+//				for (int i = 0; i < meme.length; i+=2)
+//				{
+//					System.out.print((meme[i].replace("}", "")).replace(",", ""));
+//					System.out.println((" "+meme[i+1].replace("}", "")).replace(",", ""));
+//				}
+				
+					
+				
+				
+			}
 			
 			
-		// OLD CONNECTION TODO DELETE 
-//		try (Connection connection = DriverManager.getConnection("jdbc:postgresql://192.168.99.100:32769/postgres",
-//				"postgres","postgres")){
+			System.out.print("Please enter your existing name to resume a run or enter a new name: ");
+			Player player = Player.getPlayer("rob");
+			System.out.println(player.loginString());
+			
 			HouseDAO.establish(connection);
 			House house = HouseDAO.loadRooms();
 			Room currRoom;
@@ -54,14 +58,6 @@ public class Main {
 			// TODO DELETE
 			house.displayAllRoomInfo();
 			
-			System.out.println("Welcome, please enter your name: ");
-			String name = scanIn.nextLine();
-			
-	
-			// New player creation
-			System.out.println("Creating player with name: "+name+", hp = 25, might = 5, sanity = 5");
-			Player player = new Player(name, 25, 5, 5);
-	
 			house.displayHouse();
 			System.out.println("You are at "+player.getColCoord()+","+player.getRowCoord());
 			
@@ -69,14 +65,19 @@ public class Main {
 			while (true){
 				currRoom = house.enterRoom(player);
 				currRoom.displayUponEntering();
-				if (!currRoom.visited)
+				if (!currRoom.visited){
 					currRoom.loadContents(player);
-				System.out.println(player.displayStats());
+					player.incrementRoomCount();
+				}
+				
+				System.out.println("Updating player "+player.displayStats());
+				player.updatePlayer();
+				
 				house.displayHouse();
 				userInput = scanIn.nextLine();
 				if (userInput.equals("exit")) break;
 			}
-		} catch (SQLException | MalformedURLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

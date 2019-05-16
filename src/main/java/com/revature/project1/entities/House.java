@@ -68,6 +68,7 @@ public class House {
 		if (colCoord < 0 || rowCoord < 0 || colCoord > 4 || rowCoord > 4){
 			System.out.println("Invalid room choice");
 			return null;
+			// TODO Alter Exception handling
 		}
 		return rooms[rowCoord][colCoord];
 	}

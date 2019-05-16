@@ -15,13 +15,14 @@ public class HttpRequest{
 	HttpURLConnection connection;
 	
 	
-	public HttpRequest(String URL, String conMethod) throws MalformedURLException{
+	public HttpRequest(String URL, String conMethod){
 		try{
 			url = new URL("http://localhost:8081"+URL);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(10000);
 			connection.setReadTimeout(10000);
 			connection.setRequestMethod(conMethod);
+			connection.setRequestProperty("Content-Type", "application/json");
 		} catch (IOException e) {
 			e.printStackTrace(); 
 		}
@@ -66,5 +67,13 @@ public class HttpRequest{
 		connection.disconnect();
 	}
 	
+	public int getStatus(){
+		try {
+			return connection.getResponseCode();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
 }

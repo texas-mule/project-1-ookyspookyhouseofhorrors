@@ -51,6 +51,10 @@ public class Event {
 	}
 	
 	public void defeat(){
+		System.out.println();
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println("You have been defeated by "+this.name+". You have lost half of your current HP.");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println();
 	}
 }
