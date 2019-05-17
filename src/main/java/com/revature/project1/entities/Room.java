@@ -48,7 +48,6 @@ public class Room {
 				this.item = (Item)obj;
 				break;
 			default:
-				System.out.println("RoomType not set.");
 				break;
 		}
 	}

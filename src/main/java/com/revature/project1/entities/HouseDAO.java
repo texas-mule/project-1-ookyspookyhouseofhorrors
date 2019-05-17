@@ -118,4 +118,63 @@ public class HouseDAO {
 		}		
 		return events;
 	}
+	
+	public static Monster getMonster(String id){
+		Monster monster;
+		sql = "SELECT * FROM monsters WHERE id = "+id;
+		
+		try (Statement statement = connection.createStatement()){
+			statement.execute(sql);
+			ResultSet rs = statement.getResultSet();
+			rs.next();
+			return new Monster(
+					Integer.parseInt(rs.getString("id")),
+					rs.getString("name"),
+					rs.getString("description"),
+					Integer.parseInt(rs.getString("hp")),
+					Integer.parseInt(rs.getString("strength")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return null;
+	}
+	
+	public static Event getEvent(String id){
+		Event event;
+		sql = "SELECT * FROM events WHERE id = "+id;
+		
+		try (Statement statement = connection.createStatement()){
+			statement.execute(sql);
+			ResultSet rs = statement.getResultSet();
+			rs.next();
+			return new Event(
+					Integer.parseInt(rs.getString("id")),
+					rs.getString("name"),
+					rs.getString("description"),
+					Integer.parseInt(rs.getString("sanityRoll")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return null;
+	}
+	
+	public static Item getItem(String id){
+		Item item;
+		sql = "SELECT * FROM items WHERE id = "+id;
+		
+		try (Statement statement = connection.createStatement()){
+			statement.execute(sql);
+			ResultSet rs = statement.getResultSet();
+			rs.next();
+			return new Item(
+					Integer.parseInt(rs.getString("id")),
+					rs.getString("name"),
+					rs.getString("description"),
+					Integer.parseInt(rs.getString("mightBonus")),
+					Integer.parseInt(rs.getString("sanityBonus")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return null;
+	}
 }

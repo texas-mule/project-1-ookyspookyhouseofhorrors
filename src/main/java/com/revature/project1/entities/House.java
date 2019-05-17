@@ -170,10 +170,8 @@ public class House {
 	
 	public String getHouse(){
 		StringBuilder outputBuilder = new StringBuilder();
-		outputBuilder.append("[");
 		for (int row = 0 ; row < 5 ; row++){
 			for (int col = 0 ; col < 5 ; col++){
-				outputBuilder.append("{");
 				switch (this.rooms[row][col].getType()){
 					case MONSTER: outputBuilder.append("0"); break;
 					case EVENT: outputBuilder.append("1");	break;
@@ -190,15 +188,37 @@ public class House {
 				outputBuilder.append("$");
 				if (rooms[row][col].visited) outputBuilder.append("1");
 				else outputBuilder.append("0");
-				outputBuilder.append("}");
 				outputBuilder.append((row==4 && col==4) ? "" : ",");
 			}
 		}
-		outputBuilder.append("]");
 		return outputBuilder.toString();
 	}
 	
 	public void setHouse(String data){
+		String[] dataArr = data.split(",");
+		for(int index=0 ; index< 25 ; index++){
+			String[] dataValues = dataArr[index].split("$");
+			switch (dataValues[0]){
+				case "0":	
+					rooms[index/5][index%5].type = RoomType.MONSTER;	
+					rooms[index/5][index%5].giveContents(HouseDAO.getMonster(dataValues[1]));
+					break;
+				case "1":	
+					rooms[index/5][index%5].type = RoomType.EVENT;	
+					rooms[index/5][index%5].giveContents(HouseDAO.getEvent(dataValues[1]));
+					break;
+				case "2":	
+					rooms[index/5][index%5].type = RoomType.ITEM;	
+					rooms[index/5][index%5].giveContents(HouseDAO.getItem(dataValues[1]));
+					break;
+				case "3":	
+					rooms[index/5][index%5].type = RoomType.ENTRANCE;	
+					break;
+			}		
+			if (dataValues[2].equals("1")) {
+				rooms[index/5][index%5].visited = true;
+			} else rooms[index/5][index%5].visited = false;
+		}
 		
 	}
 	
