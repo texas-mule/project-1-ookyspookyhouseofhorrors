@@ -12,6 +12,10 @@ public class Event {
 		this.sanityRoll = sanityRoll;
 	}
 	
+	public String getId(){
+		return Integer.toString(this.id);
+	}
+	
 	public String getName(){
 		return this.name;
 	}

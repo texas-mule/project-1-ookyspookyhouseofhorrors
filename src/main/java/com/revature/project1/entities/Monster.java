@@ -23,6 +23,10 @@ public class Monster {
 		this.strength = strength;
 	}
 	
+	public String getId(){
+		return Integer.toString(this.id);
+	}
+	
 	public String getName(){
 		return this.name;
 	}

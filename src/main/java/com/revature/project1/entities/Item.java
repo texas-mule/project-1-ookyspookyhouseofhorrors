@@ -15,6 +15,10 @@ public class Item {
 		this.sanityBonus = sanityBonus;
 	}
 	
+	public String getId(){
+		return Integer.toString(this.id);
+	}
+	
 	public String getName(){
 		return this.name;
 	}

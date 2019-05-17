@@ -74,6 +74,10 @@ public class Room {
 		}
 	}
 	
+	public RoomType getType(){
+		return this.type;
+	}
+	
 	public Monster getMonster(){
 		return this.monster;
 	}
