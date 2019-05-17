@@ -235,7 +235,7 @@ public class Player {
 	}
 	
 	public String displayStats(){
-		return "Name: "+name+", HP: "+hp+", Might: "+mightStat+", Sanity: "+sanityStat +", Coords:("
-				+colCoord+","+rowCoord+")";
+		return "Name: "+name+", HP: "+hp+", Might: "+mightStat+", Sanity: "+sanityStat +", Rooms Visited: "
+				+roomCount+", Coords:("+colCoord+","+rowCoord+")";
 	}
 }
