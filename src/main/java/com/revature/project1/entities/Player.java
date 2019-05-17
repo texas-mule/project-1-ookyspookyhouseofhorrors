@@ -2,8 +2,13 @@ package com.revature.project1.entities;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Player {
 	private String name;
@@ -50,6 +55,10 @@ public class Player {
 		this.roomCount = 1;
 	}
 
+	public String getName(){
+		return this.name;
+	}
+	
 	public int getHP(){
 		return hp;
 	}
@@ -141,33 +150,49 @@ public class Player {
 		httpReq.close();
 	}
 	
+	
 	// Returns the top 10 players from the database ordered by number of rooms discovered
-	public static String getLeaderboards(){
+	public static JSONArray getLeaderboards(){
 		String url = "/player/leaderboard";
 		HttpRequest httpReq = new HttpRequest(url,"GET");
-		String response = httpReq.getResponse();
+		JSONArray leaderArray = httpReq.getJSONResponse();
 		httpReq.close();
-		return response;
+		return leaderArray;
 	}
 	
 	public static void displayLeaderboard(){
-		String leaderboards = getLeaderboards();
-		leaderboards = leaderboards.substring(1, leaderboards.length()-1);
-		leaderboards = leaderboards.replaceAll("\\{", "");
+		JSONArray leaderboards = getLeaderboards();
 		
-		String[] meme = leaderboards.split("},");
 		System.out.println("++++++++++++++++++++");
 		System.out.println("+Rooms\t|Name\t   +");
 		System.out.println("+-------+----------+");
-		for (int i = 0; i < meme.length; i++)
-		{
-			String[] pair = meme[i].split(", ");
-			
-			// This bastard line of a code splits the data pair and formats it into a legible way
-			System.out.println("+"+pair[0].trim().split("=")[1] + "\t|" + pair[1].replace("}", "").split("=")[1]);
+		for (int i=0 ; i < leaderboards.length() ; i++){
+			JSONObject o = leaderboards.getJSONObject(i);
+			System.out.println(o.get("rooms")+"\t|"+o.get("name"));
 		}
 		System.out.println("++++++++++++++++++++");
-		System.out.println();
+		
+		
+		
+		
+		// TODO DELETE DEPRECATED CODE
+//		leaderboards = leaderboards.substring(1, leaderboards.length()-1);
+		
+//		leaderboards = leaderboards.replaceAll("\\{", "");
+//		
+//		String[] boardArray = leaderboards.split("},");
+//		System.out.println("++++++++++++++++++++");
+//		System.out.println("+Rooms\t|Name\t   +");
+//		System.out.println("+-------+----------+");
+//		for (int i = 0; i < boardArray.length; i++)
+//		{
+//			String[] pair = boardArray[i].split(", ");
+//			
+//			// This bastard line of a code splits the data pair and formats it into a legible way
+//			System.out.println("+"+pair[0].trim().split("=")[1] + "\t|" + pair[1].replace("}", "").split("=")[1]);
+//		}
+//		System.out.println("++++++++++++++++++++");
+//		System.out.println();
 	}
 	
 	

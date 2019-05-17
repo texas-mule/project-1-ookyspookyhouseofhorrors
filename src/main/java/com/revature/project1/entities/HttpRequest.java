@@ -1,6 +1,7 @@
 package com.revature.project1.entities;
 
 import java.io.BufferedReader;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import org.json.*;
 
 public class HttpRequest{
 	URL url;
@@ -19,8 +21,8 @@ public class HttpRequest{
 		try{
 			url = new URL("http://localhost:8081"+URL);
 			connection = (HttpURLConnection) url.openConnection();
-			connection.setConnectTimeout(10000);
-			connection.setReadTimeout(10000);
+			connection.setConnectTimeout(30000);
+			connection.setReadTimeout(30000);
 			connection.setRequestMethod(conMethod);
 			connection.setRequestProperty("Content-Type", "application/json");
 		} catch (IOException e) {
@@ -61,6 +63,20 @@ public class HttpRequest{
 			e.printStackTrace();
 		}
 		return content.toString();
+	}
+	
+	public JSONArray getJSONResponse(){
+		JSONArray jArray = null;
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String inputLine;
+			while ((inputLine = br.readLine()) != null){
+				jArray = new JSONArray(inputLine);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jArray;
 	}
 	
 	public void close(){

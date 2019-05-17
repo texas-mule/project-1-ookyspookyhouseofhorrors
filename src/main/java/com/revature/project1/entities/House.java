@@ -111,10 +111,11 @@ public class House {
 		return currRoom;
 	}
 	
-	public void displayHouse(){
+	public void displayHouse(Player player){
 		for (int row = 4 ; row >= 0 ; row--){
 			for (int col = 0; col < 5 ; col++){
-				if (rooms[col][row].visited || (row==0 && col == 2)) System.out.print(" [ X ] ");
+				if (row == player.getRowCoord() && col == player.getColCoord()) System.out.print(" [ O ] ");
+				else if (rooms[col][row].visited || (row==0 && col == 2)) System.out.print(" [ X ] ");
 				else System.out.print(" [   ] ");
 			}
 			System.out.println();

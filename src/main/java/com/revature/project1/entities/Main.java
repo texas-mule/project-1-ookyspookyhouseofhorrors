@@ -1,5 +1,7 @@
 package com.revature.project1.entities;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,35 +19,59 @@ public class Main {
 
 	public static void main(String[] args) {
 		//HTTPCALL GET RESOURCES ("LOCALHOST:8081)
-		String userInput;
+		String userInput = null;
 		
 		Scanner scanIn = new Scanner(System.in);
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream("src/main/resources/connection.properties"));
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 		
-		try (Connection connection = DriverManager.getConnection("jdbc:postgresql://isilo.db.elephantsql.com:5432/hsxmymzc",
-				"hsxmymzc","MA2IOW7yUVohDVKl0haDxrU8luBqEt0E")){
-
-			System.out.println("Would you like to view the [l]eaderboards or Play the game?: ");
-			userInput = scanIn.nextLine();
+		try (Connection connection = DriverManager.getConnection(prop.getProperty("url"),
+				prop.getProperty("username"),prop.getProperty("password"))){
+			Player player;		
 			
-			if (userInput.equalsIgnoreCase("l"))
-				Player.displayLeaderboard();
-			userInput = scanIn.nextLine();
-			System.out.print("Please enter your existing name to resume a run or enter a new name: ");
-			Player player = Player.getPlayer("rob");
-			System.out.println(player.loginString());
+			System.out.println("Would you like to view the [l]eaderboards or [p]lay the game?: ");
+			do {userInput = scanIn.nextLine();}
+			while(!userInput.equalsIgnoreCase("l") && !userInput.equalsIgnoreCase("p"));
 			
+            //Case L
+            if (userInput.equalsIgnoreCase("l")){
+                Player.displayLeaderboard();
+                System.out.println("Press enter to proceed to the game!");
+                userInput = scanIn.nextLine();
+            }
+            
+            
+            System.out.print("Please enter your existing name to resume a run or enter a new name: ");
+            do { userInput = scanIn.nextLine();
+            if (userInput.equals("")){
+            	System.out.print("User not found. Please enter a valid username: ");
+            }
+            player = Player.getPlayer(userInput);
+            if (player.getHP() <= 0){
+            	System.out.println(player.getName() +" has been defeated. You are unable to continue playing as that user");
+            	System.out.print("Please enter a different username: ");
+            }} while (player.getHP() <= 0);
+            
+            
+            
+            System.out.println(player.loginString());
+            
+			// Create a DB connection ;; Assign room names randomly ;; Fill the rooms with event/monster/item
 			HouseDAO.establish(connection);
 			House house = HouseDAO.loadRooms();
-			Room currRoom;
-			
 			house.fillRooms();
 			
 			// TODO DELETE
 			house.displayAllRoomInfo();
 			
-			house.displayHouse();
+			house.displayHouse(player);
 			System.out.println("You are at "+player.getColCoord()+","+player.getRowCoord());
-			
+
+			Room currRoom;
 			// Game rotation
 			while (true){
 				currRoom = house.enterRoom(player);
@@ -57,7 +84,7 @@ public class Main {
 				System.out.println("Updating player "+player.displayStats());
 				player.updatePlayer();
 				
-				house.displayHouse();
+				house.displayHouse(player);
 				userInput = scanIn.nextLine();
 				if (userInput.equals("exit")) break;
 			}
