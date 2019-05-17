@@ -31,7 +31,7 @@ public class Main {
 		
 		try (Connection connection = DriverManager.getConnection(prop.getProperty("url"),
 				prop.getProperty("username"),prop.getProperty("password"))){
-			Player player;		
+			Player player;
 			
 			System.out.println("Would you like to view the [l]eaderboards or [p]lay the game?: ");
 			do {userInput = scanIn.nextLine();}
@@ -47,14 +47,17 @@ public class Main {
             
             System.out.print("Please enter your existing name to resume a run or enter a new name: ");
             do { userInput = scanIn.nextLine();
-            if (userInput.equals("")){
+            if(!userInput.matches("^[A-Za-z]{2,}$")){
+                System.out.println("Name can only contain letters. Please enter a new name: ");
+            }
+            if (userInput.matches("\\s*")){
             	System.out.print("User not found. Please enter a valid username: ");
             }
             player = Player.getPlayer(userInput);
             if (player.getHP() <= 0){
             	System.out.println(player.getName() +" has been defeated. You are unable to continue playing as that user");
             	System.out.print("Please enter a different username: ");
-            }} while (player.getHP() <= 0);
+            }} while (player == null || player.getHP() <= 0);
             
             
             
@@ -85,6 +88,8 @@ public class Main {
 				player.updatePlayer();
 				
 				house.displayHouse(player);
+				// TODO Delete for testing only
+				System.out.println(house.getHouse());
 				userInput = scanIn.nextLine();
 				if (userInput.equals("exit")) break;
 			}

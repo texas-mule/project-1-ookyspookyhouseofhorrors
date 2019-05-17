@@ -53,7 +53,8 @@ public class House {
 				}
 			}
 		}
-		this.rooms[2][0].visited = true;
+		this.rooms[0][2].visited = true;
+		this.rooms[0][2].type = RoomType.ENTRANCE;
 	}
 	
 	public void clearRooms(){
@@ -78,44 +79,71 @@ public class House {
 	}
 	
 	public Room enterRoom(Player player){
-		Room currRoom;
-		// 1 is up
-		// 2 is right
-		// 3 is down
-		// 4 is left
-		System.out.println("Please choose a direction (1, 2, 3, or 4): ");
-		int choice = scanIn.nextInt();
-		
-		switch (choice){
-			case 1:
-				currRoom = this.getRoom(player.getColCoord(), player.getRowCoord()+1);
-				player.setCoord(player.getColCoord(), player.getRowCoord()+1);
-				break;
-			case 2:
-				currRoom = this.getRoom(player.getColCoord()+1,player.getRowCoord());
-				player.setCoord(player.getColCoord()+1, player.getRowCoord());
-				break;
-			case 3:
-				currRoom = this.getRoom(player.getColCoord(), player.getRowCoord()-1);
-				player.setCoord(player.getColCoord(), player.getRowCoord()-1);
-				break;
-			case 4:
-				currRoom = this.getRoom(player.getColCoord()-1, player.getRowCoord());
-				player.setCoord(player.getColCoord()-1, player.getRowCoord());
-				break;
-			default:
-				System.out.println("Unrecognized input");
-				currRoom = new Room();
-				break;
-		}
-		return currRoom;
-	}
+        Room currRoom;
+        // 1 is up
+        // 2 is right
+        // 3 is down
+        // 4 is left
+        System.out.println("Please choose a direction (1, 2, 3, or 4): ");
+        int choice = scanIn.nextInt();
+        switch (choice){
+        case 1:
+            if(player.getRowCoord() < 4){
+                currRoom = this.getRoom(player.getRowCoord()+1, player.getColCoord());
+                player.setCoord(player.getRowCoord()+1, player.getColCoord());
+                break;
+            }else{
+                currRoom = this.getRoom(player.getRowCoord(), player.getColCoord());
+                System.out.println("You cannot proceed in this direction!");
+                break;
+            }
+        case 2:
+            if(player.getColCoord() < 4){
+                currRoom = this.getRoom(player.getRowCoord(),player.getColCoord()+1);
+                player.setCoord(player.getRowCoord(), player.getColCoord()+1);
+                break;
+            }else{
+                currRoom = this.getRoom(player.getRowCoord(), player.getColCoord());
+                System.out.println("You cannot proceed in this direction!");
+                break;
+            }
+        case 3:
+            if(player.getRowCoord() > 0){
+                currRoom = this.getRoom(player.getRowCoord()-1, player.getColCoord());
+                player.setCoord(player.getRowCoord()-1, player.getColCoord());
+                break;
+            }else{
+                currRoom = this.getRoom(player.getRowCoord(), player.getColCoord());
+                System.out.println("You cannot proceed in this direction!");
+                break;
+            }
+        case 4:
+            if(player.getColCoord() > 0){
+                currRoom = this.getRoom(player.getRowCoord(), player.getColCoord()-1);
+                player.setCoord(player.getRowCoord(), player.getColCoord()-1);
+                break;
+            }else{
+                currRoom = this.getRoom(player.getColCoord(), player.getRowCoord());
+                System.out.println("You cannot proceed in this direction!");
+                break;
+            }
+        default:
+            System.out.println("Unrecognized input");
+            currRoom = new Room();
+            break;
+        }
+        return currRoom;
+    }
+    
 	
+	/*
+	 *  Displays the entirety of the house with visited rooms marked as X and the current room as O
+	 */
 	public void displayHouse(Player player){
 		for (int row = 4 ; row >= 0 ; row--){
 			for (int col = 0; col < 5 ; col++){
 				if (row == player.getRowCoord() && col == player.getColCoord()) System.out.print(" [ O ] ");
-				else if (rooms[col][row].visited || (row==0 && col == 2)) System.out.print(" [ X ] ");
+				else if (rooms[row][col].visited) System.out.print(" [ X ] ");
 				else System.out.print(" [   ] ");
 			}
 			System.out.println();
@@ -138,6 +166,40 @@ public class House {
 				}
 			}
 		}
+	}
+	
+	public String getHouse(){
+		StringBuilder outputBuilder = new StringBuilder();
+		outputBuilder.append("[");
+		for (int row = 0 ; row < 5 ; row++){
+			for (int col = 0 ; col < 5 ; col++){
+				outputBuilder.append("{");
+				switch (this.rooms[row][col].getType()){
+					case MONSTER: outputBuilder.append("0"); break;
+					case EVENT: outputBuilder.append("1");	break;
+					case ITEM:	outputBuilder.append("2");	break;
+					case ENTRANCE:	outputBuilder.append("3");	break;
+				}
+				outputBuilder.append("$");
+				switch (rooms[row][col].getType()){
+					case MONSTER: outputBuilder.append(rooms[row][col].getMonster().getId()); break;
+					case EVENT:outputBuilder.append(rooms[row][col].getEvent().getId()); break;
+					case ITEM:	outputBuilder.append(rooms[row][col].getItem().getId()); break;
+					case ENTRANCE:	outputBuilder.append("0");
+				}
+				outputBuilder.append("$");
+				if (rooms[row][col].visited) outputBuilder.append("1");
+				else outputBuilder.append("0");
+				outputBuilder.append("}");
+				outputBuilder.append((row==4 && col==4) ? "" : ",");
+			}
+		}
+		outputBuilder.append("]");
+		return outputBuilder.toString();
+	}
+	
+	public void setHouse(String data){
+		
 	}
 	
 	

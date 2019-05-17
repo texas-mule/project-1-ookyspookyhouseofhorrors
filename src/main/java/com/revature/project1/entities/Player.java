@@ -63,7 +63,7 @@ public class Player {
 		return hp;
 	}
 	
-	public void setCoord(int col, int row){
+	public void setCoord(int row, int col){
 		this.rowCoord = row;
 		this.colCoord = col;
 	}
