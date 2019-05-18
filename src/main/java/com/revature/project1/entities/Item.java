@@ -19,6 +19,10 @@ public class Item {
 		return Integer.toString(this.id);
 	}
 	
+	public int getIdInt(){
+		return this.id;
+	}
+	
 	public String getName(){
 		return this.name;
 	}
