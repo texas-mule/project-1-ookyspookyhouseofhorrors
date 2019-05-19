@@ -12,10 +12,7 @@ import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
-public class LoadGameResouces {
-	
-	String randomRooms = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\"><Body><getRandomRoomArray xmlns=\"http://webservice.myapp/\"/></Body></Envelope>";
-	
+public class LoadGameResouces {	
 	
 	public ArrayList<Event> getRandomEvents(){
 		ArrayList<Event> events= new ArrayList<Event>();
@@ -228,6 +225,59 @@ public class LoadGameResouces {
 			return null;
 		}
 	}
-	
+		
+	public ArrayList<Item> getItemsByPlayer(String username){
+		ArrayList<Item> playerItems= new ArrayList<Item>();
+		try {
+			URL obj = new URL("http://localhost:8082/ArrayGameResouces");
+			HttpURLConnection connect = (HttpURLConnection) obj.openConnection();
+			connect.setRequestMethod("POST");
+			connect.setRequestProperty("Content-Type","application/soap+xml; charset=utf-8");
+			String xml = 
+					"<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+							"<Body>" +
+							"<getItemArrayByPlayerName xmlns=\"http://webservice.myapp/\">" +
+							"<username xmlns=\"\">"+username+"</username>" +
+							"</getItemArrayByPlayerName>" +
+							"</Body>" +
+							"</Envelope>";
+			connect.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(connect.getOutputStream());
+			wr.writeBytes(xml);
+			wr.flush();
+			wr.close();
+			String responseStatus = connect.getResponseMessage();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					connect.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+				String[] res = response.toString().split("<return>|</return>|<description>|</description>|<id>|</id>|<name>|</name>|<mightBonus>|</mightBonus>|<sanityBonus>|</sanityBonus>",-1);
+				int i = 1;
+				ArrayList<String> loadedData = new ArrayList<String>();
+				while(i<res.length-1){
+					if(!res[i].equals("")){
+						loadedData.add(res[i]);
+					}
+					i++;
+				}
+				i=0;
+				while(i<loadedData.size()-4){
+					int id = Integer.valueOf(loadedData.get(i+1));
+					int mightBonus = Integer.valueOf(loadedData.get(i+2));
+					int sanityBonus = Integer.valueOf(loadedData.get(i+4));
+					Item item = new Item(id, loadedData.get(i+3), loadedData.get(i), mightBonus, sanityBonus);
+					playerItems.add(item);
+					i = i+5;
+				}
+			}
+			in.close();
+			return playerItems;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
 	
 }
