@@ -42,4 +42,12 @@ public class Item {
 								(sanityBonus>=0?"+":"")+sanityBonus+" Sanity");
 		player.addItem(this);
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
