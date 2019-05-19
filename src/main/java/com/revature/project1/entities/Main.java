@@ -19,6 +19,15 @@ public class Main {
 
 	public static void main(String[] args) {
 		//HTTPCALL GET RESOURCES ("LOCALHOST:8081)
+		ArrayList<Event> events = new ArrayList<Event>();
+		LoadGameResouces lgr = new LoadGameResouces();
+		events = lgr.getRandomEvents();
+		int i = 0;
+		while(i < events.size()){
+			System.out.println("ID: "+events.get(i).getId()+" DES: "+events.get(i).getDescription()+" Name: "+events.get(i).getName()+" SanRoll: "+events.get(i).getSanityRoll());
+			i++;
+		}
+		System.out.println("RICK FLAIR WOOOOOOO!");
 		String userInput = null;
 		
 		Scanner scanIn = new Scanner(System.in);
