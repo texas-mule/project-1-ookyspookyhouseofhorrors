@@ -19,15 +19,15 @@ public class Main {
 
 	public static void main(String[] args) {
 		//HTTPCALL GET RESOURCES ("LOCALHOST:8081)
-		ArrayList<Item> items = new ArrayList<Item>();
-		LoadGameResouces lgr = new LoadGameResouces();
-		items = lgr.getItemsByPlayer("rob");
-		int i = 0;
-		while(i < items.size()){
-			System.out.println("ID: "+items.get(i).getId()+" DES: "+items.get(i).getDescription()+" Name: "+items.get(i).getName());
-			i++;
-		}
-		System.out.println("RICK FLAIR WOOOOOOO!");
+//		ArrayList<Item> items = new ArrayList<Item>();
+//		LoadGameResouces lgr = new LoadGameResouces();
+//		items = lgr.getItemsByPlayer("rob");
+//		int i = 0;
+//		while(i < items.size()){
+//			System.out.println("ID: "+items.get(i).getId()+" DES: "+items.get(i).getDescription()+" Name: "+items.get(i).getName());
+//			i++;
+//		}
+//		System.out.println("RICK FLAIR WOOOOOOO!");
 		String userInput = null;
 		
 		Scanner scanIn = new Scanner(System.in);

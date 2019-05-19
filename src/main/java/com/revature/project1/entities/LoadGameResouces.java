@@ -40,7 +40,6 @@ public class LoadGameResouces {
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 				String[] res = response.toString().split("<return>|</return>|<description>|</description>|<id>|</id>|<name>|</name>|<sanityRoll>|</sanityRoll>",-1);
-				System.out.println("RES:");
 				int i = 1;
 				ArrayList<String> loadedData = new ArrayList<String>();
 				while(i<res.length-1){

@@ -30,8 +30,10 @@ public class Player {
 		// Parse HTTPresponse data into Person object
 		data = data.substring(2,data.length()-2);
 		String[] dataArr = data.split(",");
-
+		System.out.println("DATA:"+data);
+		System.out.println("DATA LENGTH: "+dataArr.length);
 		for (int i=0 ; i< dataArr.length; i++){
+			System.out.println("Iterator at "+i);
 			String[] pair = dataArr[i].trim().split("=");
 			System.out.println(pair[0] +" "+pair[1]);
 			if (pair[0].equals("name")) this.name=pair[1];
