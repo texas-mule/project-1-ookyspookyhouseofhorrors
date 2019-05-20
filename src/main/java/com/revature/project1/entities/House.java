@@ -168,6 +168,31 @@ public class House {
 		}
 	}
 	
+	// CREATES AN HTTPRequest FOR GET TO RETRIEVE THE HOUSE DATA FROM A PLAYER 
+	public static House loadHouse(Player player){
+		House house = new House();
+		String url = "/player/"+player.getName()+"/house";
+		HttpRequest httpReq = new HttpRequest(url,"GET");
+		String response = httpReq.getResponse();
+		System.out.println(response);
+		httpReq.close();
+		if (response.equals("null")){
+			System.out.println("Could not find house data for user "+player.getName()+"...Creating new house.");
+			house = HouseDAO.loadRooms();
+			house.fillRooms();
+			return house;
+		}
+		house.setHouse(response);
+		return house;
+	}
+	
+	public void saveHouse(Player player){
+		String url = "/player/"+player.getName()+"/house?house="+this.getHouse();
+		HttpRequest httpReq = new HttpRequest(url,"POST");
+		httpReq.getResponse();
+		httpReq.close();
+	}
+	
 	public String getHouse(){
 		StringBuilder outputBuilder = new StringBuilder();
 		for (int row = 0 ; row < 5 ; row++){
@@ -194,6 +219,7 @@ public class House {
 		return outputBuilder.toString();
 	}
 	
+	// Converts the HOUSEdata String into a set house with filled rooms
 	public void setHouse(String data){
 		String[] dataArr = data.split(",");
 		for(int index=0 ; index< 25 ; index++){

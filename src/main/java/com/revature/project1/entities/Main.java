@@ -65,8 +65,12 @@ public class Main {
             
 			// Create a DB connection ;; Assign room names randomly ;; Fill the rooms with event/monster/item
 			HouseDAO.establish(connection);
-			House house = HouseDAO.loadRooms();
-			house.fillRooms();
+			
+			// Fill house data, 
+			//		either by loading from player 
+			//		or by creating a new house
+			House house = House.loadHouse(player);
+//			House house = HouseDAO.loadRooms();
 			
 			// TODO DELETE
 			house.displayAllRoomInfo();
@@ -86,6 +90,7 @@ public class Main {
 				
 				System.out.println("Updating player "+player.displayStats());
 				player.updatePlayer();
+				house.saveHouse(player);
 				
 				house.displayHouse(player);
 				// TODO Delete for testing only
