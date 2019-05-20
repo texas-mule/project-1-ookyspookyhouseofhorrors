@@ -18,12 +18,6 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-		//HTTPCALL GET RESOURCES ("LOCALHOST:8081)
-//		LoadGameResouces lgr = new LoadGameResouces();
-//		Item item = lgr.getItemById(1);
-//		int i = 0;
-//		System.out.println("ID: "+item.getId()+" DES: "+item.getDescription()+" Name: "+ item.getName()+" MigBonus:"+item.getMightBonus()+" SanBonus:"+item.getSanityBonus());
-//		System.out.println("RICK FLAIR WOOOOOOO!");
 		String userInput = null;
 		
 		Scanner scanIn = new Scanner(System.in);
@@ -74,18 +68,16 @@ public class Main {
 			// Fill house data, 
 			//		either by loading from player 
 			//		or by creating a new house
-			House house = House.loadHouse(player);
-//			House house = HouseDAO.loadRooms();
-			
-			// TODO DELETE
-			house.displayAllRoomInfo();
+			House house = new House();
+			house.loadHouse(player);
 			
 			house.displayHouse(player);
 			System.out.println("You are at "+player.getColCoord()+","+player.getRowCoord());
-
+			
 			Room currRoom;
 			// Game rotation
 			while (true){
+				house.rooms[0][0].displayUponEntering();
 				currRoom = house.enterRoom(player);
 				currRoom.displayUponEntering();
 				if (!currRoom.visited){
@@ -98,8 +90,7 @@ public class Main {
 				house.saveHouse(player);
 				
 				house.displayHouse(player);
-				// TODO Delete for testing only
-				System.out.println(house.getHouse());
+
 				userInput = scanIn.nextLine();
 				if (userInput.equals("exit")) break;
 			}
