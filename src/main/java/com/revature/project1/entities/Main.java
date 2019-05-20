@@ -73,11 +73,10 @@ public class Main {
 			
 			house.displayHouse(player);
 			System.out.println("You are at "+player.getColCoord()+","+player.getRowCoord());
-			
+			house.rooms[0][2].displayUponEntering();
 			Room currRoom;
 			// Game rotation
 			while (true){
-				house.rooms[0][0].displayUponEntering();
 				currRoom = house.enterRoom(player);
 				currRoom.displayUponEntering();
 				if (!currRoom.visited){
