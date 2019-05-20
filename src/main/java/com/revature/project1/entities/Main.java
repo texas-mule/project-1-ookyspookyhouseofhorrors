@@ -19,14 +19,10 @@ public class Main {
 
 	public static void main(String[] args) {
 		//HTTPCALL GET RESOURCES ("LOCALHOST:8081)
-//		ArrayList<Item> items = new ArrayList<Item>();
 //		LoadGameResouces lgr = new LoadGameResouces();
-//		items = lgr.getItemsByPlayer("rob");
+//		Item item = lgr.getItemById(1);
 //		int i = 0;
-//		while(i < items.size()){
-//			System.out.println("ID: "+items.get(i).getId()+" DES: "+items.get(i).getDescription()+" Name: "+items.get(i).getName());
-//			i++;
-//		}
+//		System.out.println("ID: "+item.getId()+" DES: "+item.getDescription()+" Name: "+ item.getName()+" MigBonus:"+item.getMightBonus()+" SanBonus:"+item.getSanityBonus());
 //		System.out.println("RICK FLAIR WOOOOOOO!");
 		String userInput = null;
 		
