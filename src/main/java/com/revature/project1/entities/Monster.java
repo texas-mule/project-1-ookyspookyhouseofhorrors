@@ -77,6 +77,7 @@ public class Monster {
 	public int fight(Player player){
 		for (int i = player.getMightStat() ; i > 0 ; i--){
 			totalDamage += player.attack();
+			System.out.print("("+(i-1)+" attempts remaining) ");
 		}
 		System.out.println("Dealt a total of "+totalDamage+" damage");
 		if (totalDamage > this.getHP())

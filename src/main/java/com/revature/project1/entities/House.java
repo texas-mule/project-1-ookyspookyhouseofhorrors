@@ -17,9 +17,10 @@ public class House {
 	
 	public void fillRooms(){
 		Random rand = new Random();
-		ArrayList<Monster> monsters = HouseDAO.loadMonsters();
-		ArrayList<Event> events = HouseDAO.loadEvents();
-		ArrayList<Item> items = HouseDAO.loadItems();
+		LoadGameResouces lgr = new LoadGameResouces();
+		ArrayList<Monster> monsters = lgr.getRandomMonsters(); /*HouseDAO.loadMonsters();*/
+		ArrayList<Event> events = lgr.getRandomEvents(); /*HouseDAO.loadEvents();*/
+		ArrayList<Item> items = lgr.getRandomItems(); /*HouseDAO.loadItems();*/
 		
 		// Create an ArrayList of shuffled room types to be randomly assigned to the rooms
 		ArrayList<RoomType> types = new ArrayList<>();
@@ -222,20 +223,21 @@ public class House {
 	// Converts the HOUSEdata String into a set house with filled rooms
 	public void setHouse(String data){
 		String[] dataArr = data.split(",");
+		LoadGameResouces lgr = new LoadGameResouces();
 		for(int index=0 ; index< 25 ; index++){
 			String[] dataValues = dataArr[index].split("$");
 			switch (dataValues[0]){
 				case "0":	
 					rooms[index/5][index%5].type = RoomType.MONSTER;	
-					rooms[index/5][index%5].giveContents(HouseDAO.getMonster(dataValues[1]));
+					rooms[index/5][index%5].giveContents(lgr.getMonsterById(Integer.parseInt(dataValues[1])));
 					break;
 				case "1":	
 					rooms[index/5][index%5].type = RoomType.EVENT;	
-					rooms[index/5][index%5].giveContents(HouseDAO.getEvent(dataValues[1]));
+					rooms[index/5][index%5].giveContents(lgr.getEventById(Integer.parseInt(dataValues[1])));
 					break;
 				case "2":	
 					rooms[index/5][index%5].type = RoomType.ITEM;	
-					rooms[index/5][index%5].giveContents(HouseDAO.getItem(dataValues[1]));
+					rooms[index/5][index%5].giveContents(lgr.getItemById(Integer.parseInt(dataValues[1])));
 					break;
 				case "3":	
 					rooms[index/5][index%5].type = RoomType.ENTRANCE;	
