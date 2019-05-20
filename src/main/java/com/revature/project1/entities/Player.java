@@ -30,8 +30,10 @@ public class Player {
 		// Parse HTTPresponse data into Person object
 		data = data.substring(2,data.length()-2);
 		String[] dataArr = data.split(",");
-
+		System.out.println("DATA:"+data);
+		System.out.println("DATA LENGTH: "+dataArr.length);
 		for (int i=0 ; i< dataArr.length; i++){
+			System.out.println("Iterator at "+i);
 			String[] pair = dataArr[i].trim().split("=");
 			System.out.println(pair[0] +" "+pair[1]);
 			if (pair[0].equals("name")) this.name=pair[1];
@@ -150,6 +152,13 @@ public class Player {
 		httpReq.close();
 	}
 	
+	// CREATES AN HTTPRequest FOR TYING USERS AND ITEMS TOGETHER
+	public void updatePlayerInventory(int itemID){
+		String url = "/playerNewItem/"+name+"/"+itemID;
+		HttpRequest httpReq = new HttpRequest(url,"PUT");
+		httpReq.getResponse();
+		httpReq.close();
+	}
 	
 	// Returns the top 10 players from the database ordered by number of rooms discovered
 	public static JSONArray getLeaderboards(){
@@ -224,6 +233,7 @@ public class Player {
 	
 	public void addItem(Item item){
 		inventory.add(item);
+		this.updatePlayerInventory(item.getIdInt());
 		this.alterMight(item.getMightBonus());
 		this.alterSanity(item.getSanityBonus());
 	}

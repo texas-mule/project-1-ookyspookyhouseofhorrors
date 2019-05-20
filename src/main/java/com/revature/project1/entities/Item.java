@@ -19,6 +19,10 @@ public class Item {
 		return Integer.toString(this.id);
 	}
 	
+	public int getIdInt(){
+		return this.id;
+	}
+	
 	public String getName(){
 		return this.name;
 	}
@@ -37,5 +41,13 @@ public class Item {
 								(mightBonus>=0?"+":"")+mightBonus+" Might and "+
 								(sanityBonus>=0?"+":"")+sanityBonus+" Sanity");
 		player.addItem(this);
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

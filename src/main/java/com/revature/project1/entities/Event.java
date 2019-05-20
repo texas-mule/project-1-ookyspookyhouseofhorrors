@@ -61,4 +61,44 @@ public class Event {
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println();
 	}
+
+	public int getSanityRoll() {
+		return sanityRoll;
+	}
+
+	public void setSanityRoll(int sanityRoll) {
+		this.sanityRoll = sanityRoll;
+	}
+
+	public int getWill() {
+		return will;
+	}
+
+	public void setWill(int will) {
+		this.will = will;
+	}
+
+	public int getTotalWill() {
+		return totalWill;
+	}
+
+	public void setTotalWill(int totalWill) {
+		this.totalWill = totalWill;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }
