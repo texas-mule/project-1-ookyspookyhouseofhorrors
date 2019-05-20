@@ -30,12 +30,8 @@ public class Player {
 		// Parse HTTPresponse data into Person object
 		data = data.substring(2,data.length()-2);
 		String[] dataArr = data.split(",");
-		System.out.println("DATA:"+data);
-		System.out.println("DATA LENGTH: "+dataArr.length);
 		for (int i=0 ; i< dataArr.length; i++){
-			System.out.println("Iterator at "+i);
 			String[] pair = dataArr[i].trim().split("=");
-			System.out.println(pair[0] +" "+pair[1]);
 			if (pair[0].equals("name")) this.name=pair[1];
 			else if(pair[0].equals("hp")) this.hp=Integer.parseInt(pair[1]);
 			else if(pair[0].equals("might")) this.mightStat=Integer.parseInt(pair[1]);
@@ -136,17 +132,18 @@ public class Player {
 		String url = "/player/"+name;
 		HttpRequest httpReq = new HttpRequest(url,"GET");
 		String response = httpReq.getResponse();
-		System.out.println(response);
 		httpReq.close();
 		return new Player(response);
 	}
 	
 	// CREATES AN HTTPRequest FOR PUT FOR UPDATING A PLAYER
 	public void updatePlayer(){
+		int rooms = roomCount;
 		String url = "/player?name="+name
 					+"&hp="+hp
 					+"&might="+mightStat
-					+"&sanity="+sanityStat;
+					+"&sanity="+sanityStat
+					+"&rooms="+rooms;
 		HttpRequest httpReq = new HttpRequest(url,"PUT");
 		httpReq.getResponse();
 		httpReq.close();
@@ -180,28 +177,6 @@ public class Player {
 			System.out.println(o.get("rooms")+"\t|"+o.get("name"));
 		}
 		System.out.println("++++++++++++++++++++");
-		
-		
-		
-		
-		// TODO DELETE DEPRECATED CODE
-//		leaderboards = leaderboards.substring(1, leaderboards.length()-1);
-		
-//		leaderboards = leaderboards.replaceAll("\\{", "");
-//		
-//		String[] boardArray = leaderboards.split("},");
-//		System.out.println("++++++++++++++++++++");
-//		System.out.println("+Rooms\t|Name\t   +");
-//		System.out.println("+-------+----------+");
-//		for (int i = 0; i < boardArray.length; i++)
-//		{
-//			String[] pair = boardArray[i].split(", ");
-//			
-//			// This bastard line of a code splits the data pair and formats it into a legible way
-//			System.out.println("+"+pair[0].trim().split("=")[1] + "\t|" + pair[1].replace("}", "").split("=")[1]);
-//		}
-//		System.out.println("++++++++++++++++++++");
-//		System.out.println();
 	}
 	
 	

@@ -15,6 +15,8 @@ import java.util.Random;
  *
  */
 public class Room {
+	
+
 	public RoomType type;
 	private int id;
 	private String name;
@@ -28,7 +30,9 @@ public class Room {
 	static Random rand = new Random();
 	
 	public Room(){
-		
+		this.name = "Default name";
+		this.description = "Default description";
+		this.visited = false;
 	}
 	
 	public Room(String name, String description){
@@ -97,8 +101,8 @@ public class Room {
 		return this.item;
 	}
 	
-	public String displayUponEntering(){
-		return "You have entered the "+this.name +". " + this.description;
+	public void displayUponEntering(){
+		System.out.println("You have entered the "+this.name +": " + this.description);
 	}
 
 	public int getId() {
@@ -125,5 +129,9 @@ public class Room {
 		this.description = description;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Room [type=" + type + ", id=" + id + ", name=" + name + ", description=" + description + ", visited="
+				+ visited + "]";
+	}
 }

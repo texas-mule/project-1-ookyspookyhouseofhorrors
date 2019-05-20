@@ -80,7 +80,7 @@ public class House {
 	}
 	
 	public Room enterRoom(Player player){
-        Room currRoom;
+        Room currRoom = new Room();
         // 1 is up
         // 2 is right
         // 3 is down
@@ -170,21 +170,19 @@ public class House {
 	}
 	
 	// CREATES AN HTTPRequest FOR GET TO RETRIEVE THE HOUSE DATA FROM A PLAYER 
-	public static House loadHouse(Player player){
-		House house = new House();
+	public void loadHouse(Player player){
 		String url = "/player/"+player.getName()+"/house";
 		HttpRequest httpReq = new HttpRequest(url,"GET");
 		String response = httpReq.getResponse();
-		System.out.println(response);
 		httpReq.close();
 		if (response.equals("null")){
 			System.out.println("Could not find house data for user "+player.getName()+"...Creating new house.");
-			house = HouseDAO.loadRooms();
-			house.fillRooms();
-			return house;
+			this.rooms = HouseDAO.loadRooms();
+			this.fillRooms();
+		} else {
+		this.rooms = HouseDAO.loadRooms();
+		this.setHouse(response);
 		}
-		house.setHouse(response);
-		return house;
 	}
 	
 	public void saveHouse(Player player){
@@ -222,10 +220,12 @@ public class House {
 	
 	// Converts the HOUSEdata String into a set house with filled rooms
 	public void setHouse(String data){
+		data = data.replaceAll("\"", "");
 		String[] dataArr = data.split(",");
 		LoadGameResouces lgr = new LoadGameResouces();
 		for(int index=0 ; index< 25 ; index++){
-			String[] dataValues = dataArr[index].split("$");
+			String[] dataValues = dataArr[index].split("\\$");
+			//rooms[index/5][index%5] = new Room();
 			switch (dataValues[0]){
 				case "0":	
 					rooms[index/5][index%5].type = RoomType.MONSTER;	
@@ -235,12 +235,15 @@ public class House {
 					rooms[index/5][index%5].type = RoomType.EVENT;	
 					rooms[index/5][index%5].giveContents(lgr.getEventById(Integer.parseInt(dataValues[1])));
 					break;
-				case "2":	
-					rooms[index/5][index%5].type = RoomType.ITEM;	
+				case "2":
+					rooms[index/5][index%5].type = RoomType.ITEM;
 					rooms[index/5][index%5].giveContents(lgr.getItemById(Integer.parseInt(dataValues[1])));
 					break;
 				case "3":	
 					rooms[index/5][index%5].type = RoomType.ENTRANCE;	
+					break;
+				default:
+					System.out.println("Setting the house has failed.");
 					break;
 			}		
 			if (dataValues[2].equals("1")) {

@@ -25,8 +25,8 @@ public class HouseDAO {
 		return houseDAO;
 	}	
 	
-	public static House loadRooms(){
-		House house = new House();
+	public static Room[][] loadRooms(){
+		Room[][] rooms = new Room[5][5];
 		sql = "SELECT * FROM rooms ORDER BY RANDOM()";
 		
 		try {
@@ -37,18 +37,18 @@ public class HouseDAO {
 			for (int row=0; row<5; row++){
 				for (int col=0; col<5; col++){
 					if (row==0 && col==2) {
-						house.addRoom(row, col, new Room("Entrance Foyer","description"));
+						rooms[0][2] = new Room("Entrance Foyer","An entrance hall that leads straight into darkness");
 						col++;
 					}
-					house.addRoom(row, col, new Room(rs.getString("name"),
-													rs.getString("description")));
+					Room roomToAdd = new Room(rs.getString("name"),rs.getString("description"));
+					rooms[row][col] = roomToAdd;
 					rs.next();
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return house;
+		return rooms;
 	}
 	
 	public static ArrayList<Monster> loadMonsters(){
