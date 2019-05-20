@@ -141,7 +141,7 @@ public class Player {
 		return new Player(response);
 	}
 	
-	// CREATES AN HTTPRequest FOR PATCH FOR UPDATING A PLAYER
+	// CREATES AN HTTPRequest FOR PUT FOR UPDATING A PLAYER
 	public void updatePlayer(){
 		String url = "/player?name="+name
 					+"&hp="+hp
